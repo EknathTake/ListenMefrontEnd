@@ -79,6 +79,8 @@ var HomePage = /** @class */ (function () {
         // this.speechRecognition.stopListening().then(() => {
         //   this.isRecording = false;
         // });
+        this.voiceCmd = '';
+        this.actions = [];
         this.isRecording = false;
         console.log('listening stopped!');
     };
@@ -108,9 +110,11 @@ var HomePage = /** @class */ (function () {
     };
     HomePage.prototype.predictedActions = function (query) {
         var _this = this;
+        this.voiceCmd = query;
         this.rest.getPredictedActions(query).subscribe(function (response) {
             _this.resp = response;
             _this.actions = _this.resp;
+            _this.say('Okey');
             if (_this.totalActions > 1) {
                 console.log('multiple actions detected, need to select one of then by user');
             }
@@ -120,7 +124,7 @@ var HomePage = /** @class */ (function () {
                     action.activities.forEach(function (activity) {
                         _this.text = activity.fieldInput;
                         //txt to speach
-                        _this.speakToUser(_this.text);
+                        _this.say(_this.text);
                         //speach to txt
                         //get user resposne and process it
                     });
@@ -130,7 +134,7 @@ var HomePage = /** @class */ (function () {
             console.log(error);
         });
     };
-    HomePage.prototype.speakToUser = function (textToSpeak) {
+    HomePage.prototype.say = function (textToSpeak) {
         this.tts.speak({
             text: textToSpeak,
             rate: 1 / 10,
@@ -140,7 +144,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\dev\local\ionic-workspace\Voice-to-Text-Ionic-master\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar [color]="isRecording ? \'danger\' : \'primary\'">\n    <ion-title>\n      Listen Me <ion-col>\n        <ion-icon name="microphone"></ion-icon>\n      </ion-col>\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-grid>\n    <ion-row>\n      <ion-col>\n        <button ion-button full (click)="getPermission()">Get Permission</button>\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col>\n        <button ion-button full (click)="startListening()">Start Listening</button>\n      </ion-col>\n      <ion-col>\n        <!-- <button ion-button full (click)="stopListening()" *ngIf="isIos()">Stop Listening</button> -->\n        <button ion-button full (click)="stopListening()">Stop Listening</button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n  <!--Print the user Speech here...-->\n  <ion-card>\n    <ion-card-header>Hi...</ion-card-header>\n    <ion-card-content>\n      <ion-list>\n        <!-- <ion-item *ngFor="let match of matches">\n          {{ match }}\n        </ion-item> -->\n        <ion-item *ngFor="let action of actions">\n          <ion-item *ngFor="let activity of action.activities">\n            <p>{{activity.fieldInput}}</p>\n          </ion-item>\n        </ion-item>\n      </ion-list>\n    </ion-card-content>\n  </ion-card>\n  <p>{{text}}</p>\n\n</ion-content>\n'/*ion-inline-end:"C:\dev\local\ionic-workspace\Voice-to-Text-Ionic-master\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\dev\local\ionic-workspace\Voice-to-Text-Ionic-master\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar [color]="isRecording ? \'danger\' : \'primary\'">\n    <ion-title>\n      Listen Me <ion-col>\n        <ion-icon name="microphone"></ion-icon>\n      </ion-col>\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-grid>\n    <ion-row>\n      <ion-col>\n        <button ion-button full (click)="getPermission()">Get Permission</button>\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col>\n        <button ion-button full (click)="startListening()">Start Listening</button>\n      </ion-col>\n      <ion-col>\n        <!-- <button ion-button full (click)="stopListening()" *ngIf="isIos()">Stop Listening</button> -->\n        <button ion-button full (click)="stopListening()">Stop Listening</button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n  <!--Print the user Speech here...-->\n  <ion-card>\n    <ion-card-header>{{voiceCmd}}</ion-card-header>\n    <ion-card-content>\n      <ion-list>\n        <!-- <ion-item *ngFor="let match of matches">\n          {{ match }}\n        </ion-item> -->\n        <ion-item *ngFor="let action of actions">\n          <ion-item *ngFor="let activity of action.activities">\n            <p>{{activity.fieldInput}}</p>\n          </ion-item>\n        </ion-item>\n      </ion-list>\n    </ion-card-content>\n  </ion-card>\n  <p>{{text}}</p>\n\n</ion-content>\n'/*ion-inline-end:"C:\dev\local\ionic-workspace\Voice-to-Text-Ionic-master\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_speech_recognition__["a" /* SpeechRecognition */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_speech_recognition__["a" /* SpeechRecognition */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Platform */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__providers_rest_api_rest_api__["a" /* RestApiProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_rest_api_rest_api__["a" /* RestApiProvider */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_text_to_speech__["a" /* TextToSpeech */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_text_to_speech__["a" /* TextToSpeech */]) === "function" && _e || Object])
     ], HomePage);

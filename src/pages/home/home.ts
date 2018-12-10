@@ -5,7 +5,7 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { RestApiProvider } from '../../providers/rest-api/rest-api';
 import { Action } from '../../domain/action';
 
-const locale:string = 'en-US';
+const locale: string = 'en-US';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -13,10 +13,11 @@ const locale:string = 'en-US';
 export class HomePage {
   matches: String[];
   isRecording = false;
+  voiceCmd: string;
   resp: any;
   actions: Action[];
-  totalActions:number = 0;
-  text:string;
+  totalActions: number = 0;
+  text: string;
 
   constructor(public navCtrl: NavController,
     private speechRecognition: SpeechRecognition,
@@ -37,6 +38,8 @@ export class HomePage {
     //   this.isRecording = false;
     // });
 
+    this.voiceCmd = '';
+    this.actions = [];
     this.isRecording = false;
     console.log('listening stopped!');
   }
@@ -67,11 +70,13 @@ export class HomePage {
     console.log('speech listening!');
   }
 
-  predictedActions(query){
+  predictedActions(query) {
+    this.voiceCmd = query;
     this.rest.getPredictedActions(query).subscribe(response => {
       this.resp = response;
       this.actions = this.resp;
 
+      this.say('Okey');
       if (this.totalActions > 1) {
         console.log('multiple actions detected, need to select one of then by user');
       } else {
@@ -80,7 +85,7 @@ export class HomePage {
           action.activities.forEach(activity => {
             this.text = activity.fieldInput;
             //txt to speach
-            this.speakToUser(this.text);
+            this.say(this.text);
 
             //speach to txt
             //get user resposne and process it
@@ -92,13 +97,13 @@ export class HomePage {
     });
   }
 
-  speakToUser(textToSpeak){
+  say(textToSpeak) {
     this.tts.speak({
       text: textToSpeak,
       rate: 1 / 10,
       locale: locale
     }).then(() => console.log('Success'))
-    .catch((reason: any) => console.log(reason));
+      .catch((reason: any) => console.log(reason));
   }
 
 }
