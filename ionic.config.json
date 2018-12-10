@@ -1,0 +1,7 @@
+{
+  "name": "voicetotext",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

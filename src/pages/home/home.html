@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar [color]="isRecording ? 'danger' : 'primary'">
+    <ion-title>
+      Listen Me <ion-col>
+        <ion-icon name="microphone"></ion-icon>
+      </ion-col>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button full (click)="getPermission()">Get Permission</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button full (click)="startListening()">Start Listening</button>
+      </ion-col>
+      <ion-col>
+        <!-- <button ion-button full (click)="stopListening()" *ngIf="isIos()">Stop Listening</button> -->
+        <button ion-button full (click)="stopListening()">Stop Listening</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!--Print the user Speech here...-->
+  <ion-card>
+    <ion-card-header>Hi...</ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <!-- <ion-item *ngFor="let match of matches">
+          {{ match }}
+        </ion-item> -->
+        <ion-item *ngFor="let action of actions">
+          <ion-item *ngFor="let activity of action.activities">
+            <p>{{activity.fieldInput}}</p>
+          </ion-item>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <p>{{text}}</p>
+
+</ion-content>
